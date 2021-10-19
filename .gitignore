@@ -1,0 +1,7 @@
+*.iml
+*.idea
+*.lib
+out/
+target/
+artifacts/
+.idea/
