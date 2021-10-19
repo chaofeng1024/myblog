@@ -31,8 +31,6 @@
     </environments>
 
     <mappers>
-        <mapper class="org.example.mapper.Notify_view_recordDao"></mapper>
-        <mapper class="org.example.mapper.NotifyDao"></mapper>
-        <package name="org/example/mapper/*.xml"/>
+        <package name="org/blog/mapper/*.xml"/>
     </mappers>
 </configuration>

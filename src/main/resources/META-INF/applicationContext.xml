@@ -13,7 +13,7 @@
 
     <context:property-placeholder location="classpath:/META-INF/config.properties"></context:property-placeholder>
 
-    <context:component-scan base-package="org.example,org.fronted">
+    <context:component-scan base-package="org.blog">
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -57,7 +57,7 @@
             <array>
                 <!--如-->
                 <!--<value>classpath: org/example/mapper/*.xml</value>-->
-                <!--<value>classpath: org/fronted/mapper/*.xml</value>-->
+                <!--<value>classpath: org/blog/mapper/*.xml</value>-->
             </array>
         </property>
         <!-- 分页插件的配置 -->
@@ -84,7 +84,7 @@
          You can set more than one package by using a semicolon or comma as a separator.
         接口所在的基础包目录, 如果有多个基础包，使用分号或者逗号分隔开。
         -->
-        <property name="basePackage" value="org.example,org.fronted"></property>
+        <property name="basePackage" value="org.blog"></property>
 
         <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"></property>
     </bean>
