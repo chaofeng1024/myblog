@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <plugins>
+        <!-- 配置分页插件 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--
+                分页的合理化：当查询的页数小于最小页时候，默认查第一页；
+                             当查询的页数大于最大页数的时候，默认查最后一页。
+             -->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+    <!-- 配置环境, 因为我们可以配置多个环境，default表示使用哪个环境，就是对应的
+        环境的id
+     -->
+    <environments default="dev">
+        <environment id="dev">
+            <!-- 使用jdbc的事务 -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!-- 使用mybatis默认的连接池 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/shopping?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai"/>
+                <property name="username" value="root"/>
+                <property name="password" value="1997@Youcike"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper class="org.example.mapper.Notify_view_recordDao"></mapper>
+        <mapper class="org.example.mapper.NotifyDao"></mapper>
+        <package name="org/example/mapper/*.xml"/>
+    </mappers>
+</configuration>

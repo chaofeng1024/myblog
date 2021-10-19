@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+    <context:property-placeholder location="classpath:/META-INF/config.properties"></context:property-placeholder>
+
+    <context:component-scan base-package="org.example,org.fronted">
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--  使用cglib的方式实现aop -->
+    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/shopping?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="root"></property>
+        <!--
+            测试连接是否有效的 sql语句
+         -->
+        <property name="connectionTestQuery" value="select 1"></property>
+        <!--
+            最小空闲数量
+         -->
+        <property name="minimumIdle" value="5"></property>
+        <!-- 最大连接数量 -->
+        <property name="maximumPoolSize" value="50"></property>
+    </bean>
+
+    <bean id="sqlSessionFactoryBean" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+
+        <property name="configuration">
+            <!--
+                mybatis与mybatis-plus在日志配置上的区别
+             -->
+            <bean class="com.baomidou.mybatisplus.core.MybatisConfiguration">
+                <property name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"></property>
+            </bean>
+        </property>
+
+        <!-- 配置数据源 -->
+        <property name="dataSource" ref="dataSource"></property>
+        <!-- 配置mapper文件的位置 -->
+        <property name="mapperLocations">
+            <array>
+                <!--如-->
+                <!--<value>classpath: org/example/mapper/*.xml</value>-->
+                <!--<value>classpath: org/fronted/mapper/*.xml</value>-->
+            </array>
+        </property>
+        <!-- 分页插件的配置 -->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <props>
+                            <prop key="reasonable">true</prop>
+                        </props>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+    <!-- 将所有的接口对应的Mapper纳入到容器中
+        FUserMapper FUserMapper = sqlSession.getMapper(FUserMapper.class);
+      -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 配置SqlSessionFactory ctx.getBean('sqlSessionFactoryBean') -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"></property>
+        <!--
+         You can set more than one package by using a semicolon or comma as a separator.
+        接口所在的基础包目录, 如果有多个基础包，使用分号或者逗号分隔开。
+        -->
+        <property name="basePackage" value="org.example,org.fronted"></property>
+
+        <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"></property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+<!--    <import resource="quartz-schedule.xml"></import>-->
+
+</beans>

@@ -5,3 +5,4 @@ out/
 target/
 artifacts/
 .idea/
+.gitignore

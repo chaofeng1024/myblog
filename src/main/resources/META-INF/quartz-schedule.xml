@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+                           http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+    <bean id="orderJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 任务具体对象 -->
+<!--        <property name="targetObject" ref="sseEmitterJob"></property>-->
+        <property name="targetObject" ref="orderQuartz"></property>
+        <!-- 任务要执行的具体方法 -->
+<!--        <property name="targetMethod" value="orderProcess"></property>-->
+        <property name="targetMethod" value="changeOrder"></property>
+    </bean>
+
+    <!-- 创建trigger -->
+    <bean id="orderJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+<!--        <property name="jobDetail" ref="sseEmitterJobDetail"></property>-->
+<!--        <property name="cronExpression" value="0/2 * * ? * *"></property>-->
+        <property name="jobDetail" ref="orderJobDetail"></property>
+        <property name="cronExpression" value="0/5 * * ? * *"></property>
+    </bean>
+
+    <!-- 创建schedule  -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="orderJobTrigger"></ref>
+            </list>
+        </property>
+    </bean>
+
+
+</beans>
