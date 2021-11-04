@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/get")
 public class getInfoController {
     @GetMapping("/info")
-    @PostMapping("info")
     public String getInfo(){
         return "123";
     }

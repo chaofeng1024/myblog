@@ -54,7 +54,7 @@
     <filter-class>org.blog.filter.SetEncodingFilter</filter-class>
     <init-param>
       <param-name>encoding</param-name>
-      <param-value>GBK</param-value>
+      <param-value>UTF-8</param-value>
     </init-param>
   </filter>
   <filter-mapping>

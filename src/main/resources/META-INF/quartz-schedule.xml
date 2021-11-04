@@ -14,28 +14,26 @@
     <bean id="orderJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 任务具体对象 -->
 <!--        <property name="targetObject" ref="sseEmitterJob"></property>-->
-        <property name="targetObject" ref="orderQuartz"></property>
         <!-- 任务要执行的具体方法 -->
 <!--        <property name="targetMethod" value="orderProcess"></property>-->
-        <property name="targetMethod" value="changeOrder"></property>
     </bean>
 
     <!-- 创建trigger -->
-    <bean id="orderJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <!--<bean id="orderJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
 <!--        <property name="jobDetail" ref="sseEmitterJobDetail"></property>-->
 <!--        <property name="cronExpression" value="0/2 * * ? * *"></property>-->
-        <property name="jobDetail" ref="orderJobDetail"></property>
-        <property name="cronExpression" value="0/5 * * ? * *"></property>
-    </bean>
+        <!--<property name="jobDetail" ref="orderJobDetail"></property>-->
+        <!--<property name="cronExpression" value="0/5 * * ? * *"></property>-->
+    <!--</bean>-->
 
     <!-- 创建schedule  -->
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="triggers">
-            <list>
-                <ref bean="orderJobTrigger"></ref>
-            </list>
-        </property>
-    </bean>
+    <!--<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+        <!--<property name="triggers">-->
+            <!--<list>-->
+                <!--<ref bean="orderJobTrigger"></ref>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
 
 
 </beans>
